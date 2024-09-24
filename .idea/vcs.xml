@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="VcsDirectoryMappings">
-    <mapping directory="$PROJECT_DIR$/ros2_sensable_omni_model" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/urdf_tutorial" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/moveit2_tutorials" vcs="Git" />
   </component>
 </project>

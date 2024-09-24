@@ -1,11 +1,9 @@
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import (DeclareLaunchArgument, SetEnvironmentVariable,
-                            IncludeLaunchDescription, SetLaunchConfiguration)
+from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
-from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def generate_launch_description():
 
@@ -18,21 +16,13 @@ def generate_launch_description():
         get_package_share_directory('GenericHRLoader'),
         urdf_file_name)
 
+    rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=default_rviz_config_path,
+                                     description='Absolute path to rviz config file')
 
     with open(urdf, 'r') as infp:
         robot_desc = infp.read()
 
-    pkg_mvconfig = get_package_share_directory('h1_moveitconfig')
-    mv_launch_1 = PathJoinSubstitution([pkg_mvconfig, 'launch', 'move_group.launch.py'])
-    mv_launch_2 = PathJoinSubstitution([pkg_mvconfig, 'launch', 'moveit_rviz.launch.py'])
-    mv_launch_3 = PathJoinSubstitution([pkg_mvconfig, 'launch', 'rsp.launch.py'])
-    mv_launch_5 = PathJoinSubstitution([pkg_mvconfig, 'launch', 'spawn_controllers.launch.py'])
-
     return LaunchDescription([
-        IncludeLaunchDescription(PythonLaunchDescriptionSource(mv_launch_1)),
-        IncludeLaunchDescription(PythonLaunchDescriptionSource(mv_launch_2)),
-        IncludeLaunchDescription(PythonLaunchDescriptionSource(mv_launch_3)),
-        IncludeLaunchDescription(PythonLaunchDescriptionSource(mv_launch_5)),
         DeclareLaunchArgument(
             'use_sim_time',
             default_value='false',
@@ -46,8 +36,8 @@ def generate_launch_description():
             arguments=[urdf]),
         Node(
             package='GenericHRLoader',
-            executable='HR_Joint_Pub',
-            name='HR_Joint_Pub',
+            executable='HR_PID_Joint_Controller',
+            name='HR_PID_Joint_Controller',
             output='screen'),
         Node(
             package='rviz2',

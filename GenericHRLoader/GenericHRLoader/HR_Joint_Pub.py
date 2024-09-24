@@ -39,6 +39,7 @@ class StatePublisher(Node):
                 now = self.get_clock().now()
                 joint_state.header.stamp = now.to_msg()
                 joint_state.name = JOINT_LIST
+                joint_state.position = [0.] * len(JOINT_LIST)
 
                 joint_traj.header.stamp = now.to_msg()
                 joint_traj.joint_names = JOINT_LIST
@@ -51,8 +52,8 @@ class StatePublisher(Node):
                 joint_traj.points = [jtp]
 
                 # send the joint state and transform
-                #self.joint_pub.publish(joint_state)
-                self.joint_traj_pub.publish(joint_traj)
+                self.joint_pub.publish(joint_state)
+                #self.joint_traj_pub.publish(joint_traj)
 
                 loop_rate.sleep()
                 self.get_logger().info("Successfully published joint trajectory")
