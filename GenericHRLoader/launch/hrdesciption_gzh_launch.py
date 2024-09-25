@@ -1,9 +1,11 @@
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import (DeclareLaunchArgument, SetEnvironmentVariable,
+                            IncludeLaunchDescription, SetLaunchConfiguration)
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def generate_launch_description():
 
@@ -19,10 +21,14 @@ def generate_launch_description():
     rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=default_rviz_config_path,
                                      description='Absolute path to rviz config file')
 
+    pkg_gz = get_package_share_directory('GzHRBridge')
+    gz_launch = PathJoinSubstitution([pkg_gz, 'launch', 'gzhr.launch.py'])
+
     with open(urdf, 'r') as infp:
         robot_desc = infp.read()
 
     return LaunchDescription([
+        IncludeLaunchDescription(PythonLaunchDescriptionSource(gz_launch)),
         DeclareLaunchArgument(
             'use_sim_time',
             default_value='false',

@@ -1309,6 +1309,18 @@ Stephen Brawner (brawner@gmail.com)
        <robot_base_frame>h1/torso_link</robot_base_frame>
        <dimensions>3</dimensions>
      </plugin>
-  </gazebo>
 
+  </gazebo>
+  <gazebo reference="pelvis">
+    <sensor name="imu_sensor" type="imu">
+       <always_on>1</always_on>
+       <update_rate>1</update_rate>
+       <visualize>true</visualize>
+       <topic>imu</topic>
+       <plugin
+        filename="gz-sim-imu-system"
+        name="gz::sim::systems::Imu">
+        </plugin>
+    </sensor>
+  </gazebo>
 </robot>
